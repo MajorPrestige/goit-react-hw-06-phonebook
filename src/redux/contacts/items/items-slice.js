@@ -27,7 +27,7 @@ const itemsSlice = createSlice({
         );
 
         if (duplicateContact?.number === payload.number) {
-          alert(`Number:${payload.number} is already in your contacts`);
+          alert(`Number: ${payload.number} is already in your contacts`);
           return store;
         }
 
