@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 import s from './ContactsForm.module.css';
-import { addContact } from 'redux/contacts/items/items-actions';
+import { addContact } from 'redux/contacts/items/items-slice';
 
 function ContactsForm() {
   const [name, setName] = useState('');
@@ -26,9 +26,9 @@ function ContactsForm() {
     e.preventDefault();
 
     const newContact = {
-      id: nanoid(),
       name,
       number,
+      checked: false,
     };
 
     dispatch(addContact(newContact));

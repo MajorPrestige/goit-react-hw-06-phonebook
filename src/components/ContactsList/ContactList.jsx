@@ -2,18 +2,14 @@ import ContactsItem from 'components/ContactsItem/ContactsItem';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   deleteContact,
-  deleteCheckedContacts,
-} from 'redux/contacts/items/items-actions';
-import {
-  toggleCheckedContact,
-  clearCheckedContacts,
-} from 'redux/contacts/itemsChecked/itemsChecked-actions';
+  checkContact,
+  deleteCheckedContact,
+} from 'redux/contacts/items/items-slice';
 import s from './ContactList.module.css';
 import { getFilteredContacts } from 'redux/contacts/items/items-selectors';
 
 const ContactLists = () => {
   const contacts = useSelector(getFilteredContacts);
-  const contactsToDelete = useSelector(({ contacts }) => contacts.itemsChecked);
 
   const dispatch = useDispatch();
 
@@ -23,17 +19,15 @@ const ContactLists = () => {
 
   const handleCheckboxChange = e => {
     const contactId = e.target.name;
-    dispatch(toggleCheckedContact(contactId));
+    dispatch(checkContact(contactId));
   };
 
   const handleDeleteAllClick = () => {
-    const contactsAfterDeletion = contacts.filter(
-      ({ id }) => !contactsToDelete.includes(id)
-    );
-
-    dispatch(deleteCheckedContacts(contactsAfterDeletion));
-    dispatch(clearCheckedContacts([]));
+    const uncheckedContact = contacts.filter(({ checked }) => !checked);
+    dispatch(deleteCheckedContact(uncheckedContact));
   };
+
+  const activeButton = contacts.some(({ checked }) => checked);
 
   return (
     <ul className={s.list}>
@@ -52,7 +46,7 @@ const ContactLists = () => {
           className={s.btn}
           onClick={handleDeleteAllClick}
           type="button"
-          disabled={contactsToDelete.length === 0 ? true : false}
+          disabled={!activeButton}
         >
           Delete checked
         </button>

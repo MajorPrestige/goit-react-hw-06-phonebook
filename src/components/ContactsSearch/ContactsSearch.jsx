@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { setFilter } from 'redux/contacts/filter/filter-actions';
-
+import { setFilter } from 'redux/contacts/filter/filter-slice';
+import { getFilter } from 'redux/contacts/filter/filter-selectors';
 import s from './ContactsSearch.module.css';
 
 const ContactsSearch = () => {
-  const filter = useSelector(store => store.contacts.filter);
+  const filter = useSelector(getFilter);
   const dispatch = useDispatch();
 
   const filterContact = ({ target }) => {
